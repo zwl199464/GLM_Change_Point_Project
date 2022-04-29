@@ -1,0 +1,50 @@
+---
+title: "Change Point Detection"
+author: "Weilu Zhao(weilu.zhao@uth.tmc.edu), Wang Qian(qian.wang@uth.tmc.edu)"
+date: "4/28/2022"
+
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#bibliography: references.yaml
+```
+ 
+ 
+## 1.Introduction
+
+In linear models, one of the major assumptions is that the model holds for the entire dataset. However, in practice, it is common to encounter such a scenario where the structure (coefficients) of the model changes when the data reaches a certain threshold, which may or may not be known beforehand. Such point model coefficients change drastically is called change point. Some representative examples of change points in linear models can be found in studies regarding Alzheimer disease. Cognitive ability is commonly used as the indicator for Alzheimer disease. Physicians noticed that when patients are in their youth and middle age, the cognitive ability changes slowly. However, when the age of patients passes a certain threshold, the speed of the degeneration of cognitive ability accelerates, indicating a drastic change in the coefficient of age with respect to cognitive ability in the linear model. In this case, that age threshold is considered as the change point of the linear model for that patient.  
+Change points are widely seen in the real world. Therefore, the development of techniques to detect change points in a linear model has been a popular topic.
+Studies regarding change point detection have been focusing on 3 major area:  determining the number of change point; determining the location of the change point; and determining the coefficient of linear model for each segment. This study discusses the techniques for
+ 
+In general, change point can be divided into two types: Discontinuous an continuous change point. Discontinuous change point refers to the change point such that both
+ 
+In this literature review, we discussed the fundamental theories of change point detection in linear models. This literature review is organized in the following way: First, discuss the methods to detect change point in ordinary linear model. Then, we extend the change point detection method to generalized linear model. Finally, we discuss the change point detection in certain generalized linear model.
+
+
+
+ 
+## 2. Change Point Detection in ordinary linear models
+ 
+ 
+ 
+**2.1 Simple linear regression**
+
+ 
+**2.2 Multiple linear regression**
+
+## 3. Change Point Detection in Generalized linear model
+ **3.1 Poisson Random Variables**
+  
+ 
+
+
+## 4. Bootstrap (recent development)
+
+
+## 5. Detecting multiple change points: the PULSE criterion
+
+
+## References
