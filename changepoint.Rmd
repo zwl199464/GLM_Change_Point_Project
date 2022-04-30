@@ -15,6 +15,9 @@ knitr::opts_chunk$set(echo = TRUE)
  
 ## 1.Introduction
 
+\  
+
+
 In linear models, one of the major assumptions is that the model holds for the entire dataset. However, in practice, it is common to encounter such a scenario where the structure (coefficients) of the model changes when the data reaches a certain threshold, which may or may not be known beforehand. Such point model coefficients change drastically is called change point. Some representative examples of change points in linear models can be found in studies regarding Alzheimer disease. Cognitive ability is commonly used as the indicator for Alzheimer disease. Physicians noticed that when patients are in their youth and middle age, the cognitive ability changes slowly. However, when the age of patients passes a certain threshold, the speed of the degeneration of cognitive ability accelerates, indicating a drastic change in the coefficient of age with respect to cognitive ability in the linear model. In this case, that age threshold is considered as the change point of the linear model for that patient.  
 Change points are widely seen in the real world. Therefore, the development of techniques to detect change points in a linear model has been a popular topic.
 Studies regarding change point detection have been focusing on 3 major area:  determining the number of change point; determining the location of the change point; and determining the coefficient of linear model for each segment. This study discusses the techniques for
@@ -24,16 +27,278 @@ In general, change point can be divided into two types: Discontinuous an continu
 In this literature review, we discussed the fundamental theories of change point detection in linear models. This literature review is organized in the following way: First, discuss the methods to detect change point in ordinary linear model. Then, we extend the change point detection method to generalized linear model. Finally, we discuss the change point detection in certain generalized linear model.
 
 
+\ 
+
+
 
  
 ## 2. Change Point Detection in ordinary linear models
  
- 
+\  
  
 **2.1 Simple linear regression**
 
+\  
+
+
+First, we consider a simple linear regression with one change point. We will discuss the discontinuous change point models first. Discontinuous change point models are models with no continuity constraints at the change points. Thus, the models of all segments are not restricted to common values at the change points. Consequently, for a known change point, the models of each segment are autonomous and all parameters in the linear predictor can be estimated separately. An unknown change point can be either estimated by a simple grid search over all feasible possibilities or by analyzing recursive residuals. The second method is appropriate if there is only one change point in the model, or the number of change points is small with respect to the sample size. This section considers change point models with one discontinuous change point. After introducing such a model for ordinary linear models(OLMs), it is then generalized for the wider class of GLMs. Finally, recursive residuals for OLMs and GLMs are introduced, which can be used to estimate the change point as well as to test the necessity of a change point.
+
+\  
+
+Consider a simple linear regression model with a discontinuous change at a fixed but unknown change point. Let $(x_i, y_i), i = 1, \dots , n$, denote pairs of observations, where $y_i$ is the response and $x_i$ some explanatory variable. Let us further assume that such $n$ pairs $(x_i, y_i)$ of observations can be arranged in some natural ordering. In this article, if not quoted otherwise, the index $i$ describes this kind of order. Thus, the change point $\tau$ is given by any index $i$ and determines the observation $x_{\tau}$ , after which the structural change in the relationship between $x_i$ and $y_i$ might occur. The change point $\tau$ partitions the data into two separate segments, in which the mean structure as well as the variance may be different. In fact, the first $\tau$ observations in a sample of size $n$ follow one OLM and the last $n − \tau$ observations follow another OLM. The linear parameters of these two models are $\boldsymbol{\beta_1} = (\beta_{10}, \beta_{11})^T$ and $\boldsymbol{\beta_2} = (\beta_{20}, \beta_{21})^T$, respectively. Then, such an OLM can be written as
+
+\  
+
+$$y_i =\begin{cases} \beta_{10} + x_i\beta_{11} + \varepsilon_{1i} \,\,\,\,\,i = 1, \dots, \tau\\
+\beta_{20} + x_i\beta_{21} + \varepsilon_{2i} \,\,\,\,\,i = \tau+1, \dots, n, \\ \end{cases} \,\,\,\,(2.1)$$
+
+
+\  
+
+where the errors  $\varepsilon_{di}$ are independent random variables and follow a normal distribution with zero mean and variance $\sigma_1^2$  for $i \le \tau$ and variance $\sigma_2^2$  for $i > \tau$ , i.e. $\varepsilon_{1i}\stackrel{iid}{\sim}N(0,\sigma_1^2)$ and $\varepsilon_{2i}\stackrel{iid}{\sim}N(0,\sigma_2^2)$,  respectively. Such a model was first considered by Quandt (1958). He introduced a maximum likelihood (ML) method for estimating the unknown parameters $\boldsymbol{\beta}=(\boldsymbol{\beta_1}^T,\boldsymbol{\beta_2}^T)^T$, $\sigma^2=\sigma_1^2=\sigma_2^2$ and $\tau$ , which we describe in the following paragraph. 
+
+\  
+
+
+The parameters of interest are the linear parameter  $\boldsymbol{\beta}$ and the change point $\tau$ . To guarantee the estimable of the parameters $\boldsymbol{\beta}$ and $\boldsymbol{\sigma}^2 = (\sigma^2_1, \sigma^2_2)^T$, possible values of $\tau$ are restricted to $\{3, 4, \dots , n−3\}$. To estimate these parameters with the ML method, we have to take a closer look to the log likelihood according to model $(2.1)$. The log likelihood of a simple linear regression is
+
+\  
+
+$$\ell(\alpha,\beta,\sigma^2|\boldsymbol y)=-\frac{n}{2}log(2\pi\sigma^2)-\frac{1}{2\sigma^2}\sum^n_{i=1}(y_i-\alpha-\beta x_i)^2,$$
+
+\  
+
+
+where $\alpha$ and $\beta$ are the intercept and slope of the simple linear regression, respectively. Then, in the case where  $\tau$ is known, the log likelihood under model (2.1) is
+
+\  
+
+
+
+$$\ell(\boldsymbol{\beta},\boldsymbol{\sigma}^2|\tau,\boldsymbol y)=-\frac{\tau}{2}log(2\pi\sigma_1^2)-\frac{1}{2\sigma_1^2}\sum^\tau_{i=1}(y_i-\beta_{10}-\beta_{11} x_i)^2\\-\frac{n-\tau}{2}log(2\pi\sigma_2^2)-\frac{1}{2\sigma_2^2}\sum^n_{i=\tau+1}(y_i-\beta_{20}-\beta_{21} x_i)^2,$$
+
+\  
+
+or
+
+\  
+
+$$\ell(\boldsymbol{\beta},\boldsymbol{\sigma}^2|\tau,\boldsymbol y)=\ell(\beta_{10},\beta_{11},\sigma_1^2|y_1,\dots,y_\tau)+\ell(\beta_{20},\beta_{21},\sigma_2^2|y_{\tau+1},\dots,y_n).\,\,\,\,(2.2)$$
+\  
+
+
+The first term on the right hand side of $(2.2)$ is the log likelihood of the first $\tau$ observations and the second term is the log likelihood of the last $n − \tau$ observations. For $\tau$ known, both terms are mutually independent. Thus, the ML estimates for $\boldsymbol{\beta}$ and $\boldsymbol{\sigma}^2$ are the ML estimates of the two separate models.
+
+\  
+
+
+In the case of $\tau$ unknown, the change point has to be estimated. The main problem in estimating the change point is that there is no solution in closed form for estimating the parameter $\boldsymbol{\beta}$ and $\tau$ simultaneously. This is due to the fact that the ML estimate of the parameter $\boldsymbol{\beta}$ is a function of $\tau$ . It is only possible for a given value of $\tau$ to derive the ML estimate of $\boldsymbol{\beta}$. Therefore, the only feasible way to estimate the change point is to apply a grid search over a set of all possible values of $\tau$. Now, for an arbitrary $\tau \in \{3, 4, \dots , n − 3\}$ the log likelihood given the ML estimates $\boldsymbol{\hat\beta}$ and $\boldsymbol{\hat\sigma}^2$ is
+
+\  
+
+$$\ell_u(\tau|\boldsymbol{\hat\beta},\boldsymbol{\hat\sigma}^2,\boldsymbol y)=-\frac{n}{2}log(2\pi )-\frac{\tau}{2}log\,\hat\sigma_1^2-\frac{n-\tau}{2}log\,\hat\sigma_2^2-\frac{n}{2}\,\,\,\,\,\,\,\,\,\,(2.3)$$
+
+
+\  
+
+for $\sigma_1^2\ne\sigma_2^2$ and
+
+\  
+
+$$\ell_e(\tau|\boldsymbol{\hat\beta},\boldsymbol{\hat\sigma}^2,\boldsymbol y)=-\frac{n}{2}log(2\pi )-\frac{n}{2}log(\tau\hat\sigma_1^2+(n-\tau)\hat\sigma_2^2)-\frac{n}{2}\,\,\,\,\,\,\,\,\,\,(2.4)$$
+\  
+
+for $\sigma_1^2=\sigma_2^2=\sigma^2$, where the subscripts $u$ and $e$ stand for unequal and equal variances, respectively. The ML estimate $\hat\tau$ is the value of $\tau$ that maximizes
+(2.3) respectively (2.4). Next we consider testing whether there is a change in the regression regime or not. A very common method for testing hypothesis is the likelihood ratio (LR) test. It is applicable for testing nested models and the test statistic is defined as
+
+\  
+
+
+$$\lambda(\boldsymbol y)=\frac{sup_{\Theta_0}L(\boldsymbol\theta|\boldsymbol y)}{sup_{\Theta}L(\boldsymbol\theta|\boldsymbol y)},$$
+\  
+
+where $L(\boldsymbol\theta|\boldsymbol y)$ is the likelihood function of the parameter vector $\boldsymbol \theta$ for the given data $\boldsymbol y$ and $\Theta$ is the entire parameter space. The set $\Theta_0$ is the parameter space restricted under $H_0$ and is necessarily a subset of $\Theta$, i.e. $\Theta_0 \subset\Theta$. Using the ML method for estimating the parameter $\boldsymbol \theta$, the LR test statistic can be written as
+
+
+\  
+
+
+$$\lambda(\boldsymbol y)=\frac{ L(\boldsymbol{\hat\theta}_0|\boldsymbol y)}{ L(\boldsymbol{\hat\theta}|\boldsymbol y)},$$
+\  
+
+where $\boldsymbol{\hat\theta}$ is the unrestricted ML estimate of $\boldsymbol{\theta}$ which can be realized in the entire parameter space $\Theta$, and $\boldsymbol{\hat\theta}_0$ is the restricted ML estimate where the maximization is restricted to $\Theta_0$. Under some regularity conditions, minus twice the LR test statistic, i.e.
+
+\  
+
+$$\Lambda(\boldsymbol{y})=-2\,log\,\lambda(\boldsymbol{y}),$$
+
+\  
+
+follows asymptotically a $\chi^2$-distribution with $q$ degrees of freedom, where $q$ is the difference of the number of parameters in the models under $H_0$ and $H_1$, respectively (see Casella & Berger, 2002, for a detailed discussion). 
+
+\  
+
+To test whether there is a change in the regression regime or not, and considering model (2.1), the hypothesis is
+
+\  
+
+$$H_0:\boldsymbol{\beta}_{1}=\boldsymbol{\beta}_{2}\\H_1:\boldsymbol{\beta}_{1}\ne\boldsymbol{\beta}_{2}$$
+\  
+
+
+An assumption for applying the LR test is that the models under $H_0$ and $H_1$ are nested. For model (2.1) it is not obvious that a simple linear regression without a change point is nested in model (2.1). To see this let $\boldsymbol{\beta}_{2} = \boldsymbol{\beta}_{1} + \boldsymbol{\delta}$ with $\boldsymbol{\delta} = ({\delta}_0, {\delta}_1)^T$ and
+
+\  
+
+$$z_i =\begin{cases} 0 \,\,\,\,\,i = 1, \dots, \tau\\
+1 \,\,\,\,\,i = \tau+1, \dots, n. \\ \end{cases} \,\,\,$$
+
+\  
+
+Then $(2.1)$ can be written as
+
+\   
+
+$$y_i = \beta_{10} + \beta_{11}x_i + z_i(\delta_0 + \delta_1x_i) + \varepsilon_i\,\,\,\,\,\,\,\, i= 1, \dots , n , \,\,\,\,\,\,\,\,(2.5)$$
+\  
+
+and it can be clearly seen, that an OLM without a change point, given by
+
+\  
+
+$$y_i = \beta_{10} + \beta_{11}x_i + \varepsilon_i\,\,\,\,\,\,\,\, i= 1, \dots , n ,$$
+
+\  
+
+is nested in (2.5). Thus, this assumption for the LR test is satisfied.
+
+\  
+
+
+Recall that the maximized log likelihood according to a simple linear regression is
+
+
+\  
+
+$$\ell_e(\boldsymbol{\hat\beta},{\tilde\sigma}^2|\boldsymbol y)=-\frac{n}{2}log(2\pi )-\frac{n}{2}log(\tilde\sigma^2)-\frac{n}{2}\,\,\,\,\,\,\,\,\,\,(2.6)$$
+\  
+
+
+where $\tilde\sigma^2$ is the usual ML estimate of $\sigma^2$ based on all observations. Then $\Lambda_u(\boldsymbol y)$ is obtained by subtracting (2.4) from (2.6) as
+
+
+\  
+
+
+$$\Lambda_u(\boldsymbol y)=n\,log(\tilde\sigma^2)-\tau\,log(\hat\sigma_1^2)-(n-\tau)\,log(\hat\sigma^2_2).$$
+
+\  
+
+In case of equal variances this becomes
+
+\  
+
+$$\Lambda_e(\boldsymbol y)=n\,log(\tilde\sigma^2)-n\,log(\tau\hat\sigma_1^2-(n-\tau)\hat\sigma^2_2).$$
+\  
+
+As mentioned above, under standard regularity conditions $\Lambda_e(\boldsymbol y)$ is asymptotically $\chi^2$-distributed. However, as Seber and Wild (1989) noted, standard asymptotical theory does not apply here because $\tau$ takes only discrete values and $H_0 : \boldsymbol{\beta}_1 = \boldsymbol{\beta}_2$ is also true if the change point lies outside the range of the data. Moreover, Hawkins (1980) showed that the LR test statistic tends to infinity as $n$ increases. Therefore, the LR test can only be used as an approximative device. Another test was introduced by Chow (1960). He assumed that the change point is known and uses the usual F-test statistic for testing two nested models in linear regression. As usually the change point is unknown it is taken to be $\tau = n/2$. The problem that arises here is, that either the model on the left hand side or the model on the right hand side of the change point contains observations of the other regime. Thus, this test only provides satisfactory results if the true change point is $n/2$.
+
+\  
+
+
+Farley and Hinich (1970) presented another test statistic for testing a change point in an OLM based on a Bayesian approach. They considered the model
+
+
+
+\  
+
+$$y_i =\begin{cases} \alpha + \beta x_i + \varepsilon_{i}  \,\,\,\,\, \,\,\,\,\, \,\,\,\,\, \,\,\,\,\, \,\,\,\,\, \,\,\,\,\,\,\,\,\,\,\,i = 1, \dots, \tau-1\\
+\alpha - \delta x_\tau +(\beta+\delta)x_i + \varepsilon_{i} \,\,\,\,\,i = \tau, \dots, n, \\ \end{cases} \,\,\,\,(2.7)$$
+\  
+
+where $\delta$ determines the shift at the change point and $\varepsilon_{i} \stackrel{iid}{\sim} N(0, \sigma^2)$. Using the notation from above and defining
+
+\  
+$$z_i =\begin{cases} 0 \,\,\,\,\, \,\,\,\,\, \,\,\,\,\, \,\,\,\,\,\,i = 1, \dots, \tau-1\\
+x_i-x_\tau \,\,\,\,\,otherwise, \\ \end{cases} \,\,\,$$
+
+\  
+
+then (2.7) can be written as
+
+\  
+
+$$y_i = \alpha + \beta x_i + \delta z_i + \varepsilon_{i}  \,\,\,\,\, \,\,\,\,\,  i = 1, \dots, n,$$
+\  
+and the hypothesis for testing a shift $\delta$ in the OLM at the change point is
+\  
+
+$$H_0:\delta=0\\\,H_1:\delta\ne0\,.$$
+\  
+
+Farley and Hinich (1970) suggested, that a priori every value of $\tau$ is equally likely, i.e.
+
+\  
+
+$$P(\tau=i)=1/n\,\,\,\,\,\,\,\,\,\,for \,\,\,\,\,\,\,\,\,\,  i = 1, \dots, n. \,\,\,\,\,\,\,\,\,\,(2.8)$$
+
+\  
+
+
+Then under $H_0$ the marginal response mean is assumed to follow
+
+\  
+
+$$E_0[y_i]=\alpha+\beta x_i. \,\,\,\,\,\,\,\,\,\,(2.9)$$
+\  
+
+Under the alternative, i.e. if a shift of size $\delta$ occurs at the change point $\tau = i^∗$, we have the conditional mean model
+
+\  
+$$E_{\delta}[y_i|\tau= i^∗]=\alpha+\beta x_i+\delta z_i. $$
+\  
+
+which is
+
+\ 
+
+$$E_{\delta}[y_i|\tau= i^∗]=\begin{cases}\alpha+\beta x_i   \,\,\,\,\, \,\,\,\,\,   \,\,\,\,\, \,\,\,\,\,   \,\,\,\,\, \,\,\,\,\,   \,\,\,\, \,\,\,\,\, \,\,\,\,\,  i = 1, \dots, i^* \\\alpha+\beta x_i+\delta(x_i-x_{i^*})  \,\,\,\,\, \,\,\,\,\,  otherwise.\end{cases} $$
+
+\  
+
+Using (2.8) yields the marginal mean
+
+
+\  
+
+$$E_{\delta}[y_i]=\frac{1}{n}\sum^n_{j=1}E_{\delta}[y_i|\tau=j]$$
+
+\  
+
+which is
+
+\  
+
+
+
+$$E_{\delta}[y_i]=\begin{cases}\alpha+\beta x_i   \,\,\,\,\, \,\,\,\,\,   \,\,\,\,\, \,\,\,\,\,   \,\,\,\,\, \,\,\,\,\,   \,\,\,\, \,\,\,\,\, \,\,\,\,\,  \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,i = 1 \\\alpha+\beta x_i+\delta\frac{1}{n}\sum^i_{j=1}(x_i-x_{j})  \,\,\,\,\, \,\,\,\,\,  otherwise.\end{cases} \,\,\,\,\,\,\,\,\,\,(2.10) $$
+
+\  
+
+Farley and Hinich (1970) substituted (2.9) and (2.10) in the likelihood function of the OLM with and without a change point respectively, and gave a first order approximation of the LR test statistic. Furthermore, they mentioned that for $\sigma^2$ known, this statistic follows a normal distribution.
+
+
+
+\  
  
 **2.2 Multiple linear regression**
+
+\  
+
+
+
+
+\  
 
 ## 3. Change Point Detection in Generalized linear model
  **3.1 Poisson Random Variables**
