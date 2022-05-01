@@ -689,17 +689,696 @@ normal distribution.</p>
 <p> </p>
 <p><strong>2.2 Multiple linear regression</strong></p>
 <p> </p>
+<p>Next we consider an OLM with more than one explanatory variable,
+commonly known as multiple linear regression. Again, let <span class="math inline">\(y_i, i = 1, 2, \dots , n\)</span> denote
+observations on the response variable. In contrast to section 2.1, let
+<span class="math inline">\(x_i \in \mathbb{R}^{p×1}\)</span> denote the
+column vector of <span class="math inline">\(p\)</span> independent
+explanatory variables, i.e. <span class="math inline">\(\boldsymbol{x}_i
+= (1, x_{i2}, . . . , x_{ip})^T\)</span>, with <span class="math inline">\(x_{i1} = 1\)</span> for all <span class="math inline">\(i\)</span>, to include an intercept in the model.
+Then an OLM with one discontinuous change point can be written as</p>
+<p> </p>
+<p><span class="math display">\[y_i =\begin{cases}
+\boldsymbol{x}_i^T\boldsymbol{\beta}_{1} + \varepsilon_{1i}
+\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,i = 1, \dots, \tau\\
+\boldsymbol{x}_i^T\boldsymbol{\beta}_{2} + \varepsilon_{2i}
+\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,i = \tau+1, \dots, n, \\
+\end{cases} \,\,\,\,(2.11)\]</span></p>
+<p> </p>
+<p>where <span class="math inline">\(\boldsymbol{\beta}_d, \,\,\,\,\,d =
+1, 2\)</span>, are <span class="math inline">\(p \times 1\)</span>
+vectors of unknown parameters and <span class="math inline">\(\varepsilon_{di}\)</span> are iid errors with
+<span class="math inline">\(\varepsilon_{di} \stackrel{iid}{\sim} N(0,
+\sigma_d^2)\)</span>. To ensure valid estimates for <span class="math inline">\(\boldsymbol{\beta}_d\)</span> and <span class="math inline">\(\sigma^2_d\)</span> the possible values of <span class="math inline">\(\tau\)</span> are restricted to <span class="math inline">\(\{p + 1, \dots , n − p − 1\}\)</span>. Moreover,
+it is assumed that the first <span class="math inline">\(p+1\)</span>
+and the last <span class="math inline">\(n−p−1\)</span> vectors of <span class="math inline">\(\boldsymbol{x}_i\)</span> are linearly
+independent.</p>
+<p> </p>
+<p>In matrix representation, model (2.11) can be written as two separate
+OLMs</p>
+<p> </p>
+<p><span class="math display">\[\begin{cases}\boldsymbol{y}_1=\boldsymbol{X}_1\boldsymbol{\beta}_1+\boldsymbol{\varepsilon}_{1}\\
+\boldsymbol{y}_2=\boldsymbol{X}_2\boldsymbol{\beta}_2+\boldsymbol{\varepsilon}_{2},\end{cases}
+\,\,\,\,\,\,(2.12)\]</span>  </p>
+<p>where <span class="math inline">\(\boldsymbol{y}_1\)</span> and <span class="math inline">\(\boldsymbol{y}_2\)</span> are both column vectors
+of the first <span class="math inline">\(\tau\)</span> and the last
+<span class="math inline">\(n − \tau\)</span> observations of the
+response variable, respectively. The matrices <span class="math inline">\(\boldsymbol{X}_1\)</span> and <span class="math inline">\(\boldsymbol{X}_2\)</span> are the first <span class="math inline">\(\tau\)</span> and the last <span class="math inline">\(n−\tau\)</span> row vectors of the design matrix
+respectively, and hence given by <span class="math inline">\(\boldsymbol{X}_1 = (\boldsymbol{x}_1,\dots ,
+\boldsymbol{x}_\tau )^T\)</span> and <span class="math inline">\(\boldsymbol{X}_2 = (\boldsymbol{x}_{\tau+1},\dots,
+\boldsymbol{x}_n)^T\)</span>. Furthermore, the error vectors follow a
+Normal distribution, i.e. <span class="math inline">\(\boldsymbol{\varepsilon}_{d} {\sim}
+N(\boldsymbol{0}, \sigma_d^2\boldsymbol{I}_d)\)</span>, where <span class="math inline">\(\boldsymbol{I}_d\)</span> is the identity matrix
+with rank <span class="math inline">\(\tau\)</span> for <span class="math inline">\(d = 1\)</span> and rank <span class="math inline">\(n − \tau\)</span> for <span class="math inline">\(d = 2\)</span>.</p>
+<p> </p>
+<p>As there is no continuity constraint for the two models at the change
+point, the two models of <span class="math inline">\((2.12)\)</span> are
+autonomous and can be written as</p>
+<p> </p>
+<p><span class="math display">\[\begin{pmatrix}\boldsymbol{y}_1\\\boldsymbol{y}_2\end{pmatrix}=\begin{pmatrix}\boldsymbol{X}_1&amp;\boldsymbol{0}\\\boldsymbol{0}&amp;\boldsymbol{X}_2\end{pmatrix}\begin{pmatrix}\boldsymbol{\beta}_1\\\boldsymbol{\beta}_2\end{pmatrix}+\begin{pmatrix}\boldsymbol{\varepsilon}_1\\\boldsymbol{\varepsilon}_2\end{pmatrix}.
+\,\,\,\,\,\,(2.13)\]</span>  </p>
+<p>Note that the design matrix in <span class="math inline">\((2.13)\)</span> is block diagonal, which indicates
+independence between the estimates of <span class="math inline">\(\boldsymbol{\beta}_1\)</span> and <span class="math inline">\(\boldsymbol{\beta}_2\)</span>. Thus, if the change
+point <span class="math inline">\(\tau\)</span> is known, the log
+likelihood can be partitioned into two terms, namely</p>
+<p> </p>
+<p><span class="math display">\[\ell(\boldsymbol{\beta},\boldsymbol{\sigma}^2|\tau,\boldsymbol
+y)=\ell(\boldsymbol{\beta}_1,\sigma_1^2|y_1,\dots,y_\tau)+\ell(\boldsymbol{\beta}_2,\sigma_2^2|y_{\tau+1},\dots,y_n),\,\,\,\,(2.14)\]</span></p>
+<p> </p>
+<p>with <span class="math inline">\(\boldsymbol{\sigma}^2=(\sigma^2_1,\sigma^2_2)^T\)</span>.
+These two terms correspond to the log likelihood of the first <span class="math inline">\(\tau\)</span> observations and the last <span class="math inline">\(n−\tau\)</span> observations and both terms are
+mutually independent. Thus, the ML estimates for <span class="math inline">\(\boldsymbol{\beta}\)</span> and <span class="math inline">\(\boldsymbol{\sigma}^2\)</span> are the ML
+estimates of the two separate models and are given by</p>
+<p> </p>
+<p><span class="math display">\[\boldsymbol{\hat\beta}_d=(\boldsymbol{X}_d^T\boldsymbol{X}_d)^{-1}\boldsymbol{X}_d^T\boldsymbol{y}_d,,\,\,\,\,d=1,2\]</span></p>
+<p> </p>
+<p>and</p>
+<p> </p>
+<p><span class="math display">\[\hat\sigma_1^2=\frac{1}{\tau}\hat S_1^2,
+\,\,\,\,\hat\sigma_2^2=\frac{1}{n-\tau}\hat S_2^2,\]</span>  </p>
+<p>where</p>
+<p> </p>
+<p><span class="math display">\[\hat
+S^2_d=(\boldsymbol{y}_d-\boldsymbol{X}_d\boldsymbol{\hat\beta}_d)^T(\boldsymbol{y}_d-\boldsymbol{X}_d\boldsymbol{\hat\beta}_d)\]</span></p>
+<p> </p>
+<p>is the residual sum of squares for the model in the <span class="math inline">\(d\)</span>th segment.</p>
+<p> </p>
+<p>In the case of <span class="math inline">\(\tau\)</span> unknown,
+however, the change point has to be estimated. The ML estimate of <span class="math inline">\(\tau\)</span> is again the value which maximizes
+the log likelihood <span class="math inline">\((2.14)\)</span> at the
+given ML estimates <span class="math inline">\(\boldsymbol{\hat\beta} =
+( \boldsymbol{\hat\beta}_1^T,\boldsymbol{\hat\beta}_2^T)^T\)</span> and
+<span class="math inline">\(\boldsymbol{\hat\sigma}^2\)</span> of the
+two models. Note that <span class="math inline">\(\boldsymbol{\hat\beta}\)</span> and <span class="math inline">\(\boldsymbol{\hat\sigma}^2\)</span> are again
+functions of <span class="math inline">\(\tau\)</span> and have to be
+estimated for each <span class="math inline">\(\tau\)</span> separately.
+The log likelihood <span class="math inline">\((2.14)\)</span> at these
+ML estimates is given by</p>
+<p> </p>
+<p><span class="math display">\[\ell(\tau|\boldsymbol{\hat\beta},\boldsymbol{\hat\sigma}^2,\boldsymbol
+y)=-\frac{n}{2}log(2\pi
+)-\frac{\tau}{2}log\,\hat\sigma_1^2-\frac{n-\tau}{2}log\,\hat\sigma_2^2-\frac{1}{2\hat\sigma_1^2}\tau\hat\sigma_1^2-\frac{1}{2\hat\sigma_2^2}(n-\tau)\hat\sigma_2^2.\]</span>
+ </p>
+<p>Thus, <span class="math inline">\(\hat\tau\)</span> is obtained by
+maximizing</p>
+<p> </p>
+<p><span class="math display">\[\ell(\tau|\boldsymbol{\hat\beta},\boldsymbol{\hat\sigma}^2,\boldsymbol
+y)=-\frac{n}{2}log(2\pi
+)-\frac{\tau}{2}log\,\hat\sigma_1^2-\frac{n-\tau}{2}log\,\hat\sigma_2^2-\frac{n}{2}.
+\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,(2.15)\]</span>  </p>
+<p>with respect to <span class="math inline">\(\tau = p + 1,\dots , n −
+p − 1\)</span>.</p>
+<p> </p>
+<p>Under the assumption <span class="math inline">\(\sigma^2_1=\sigma^2_2=\sigma^2\)</span> the ML
+estimate of <span class="math inline">\(\sigma^2\)</span> is</p>
+<p> </p>
+<p><span class="math display">\[\hat\sigma^2=\frac{1}{n}\left(\hat
+S^2_1+\hat S^2_2\right)\]</span></p>
+<p> </p>
+<p>and <span class="math inline">\((2.15)\)</span> reduces to</p>
+<p> </p>
+<p><span class="math display">\[\ell(\tau|\boldsymbol{\hat\beta},\boldsymbol{\hat\sigma}^2,\boldsymbol
+y)=-\frac{n}{2}log(2\pi
+)-\frac{n}{2}log\,\hat\sigma^2-\frac{n}{2}.\]</span></p>
+<p> </p>
+<p>This means, that in the case of equal variances, <span class="math inline">\(\hat\tau\)</span> minimizes <span class="math inline">\(\hat S^2_1+\hat S^2_2\)</span>.</p>
+<p> </p>
+<p>For testing the necessity of a change in an OLM, consider again the
+LR test statistic and Chow’s test. The quantity <span class="math inline">\(\Lambda_u(\boldsymbol y)\)</span> based on the LR
+test statistic for model <span class="math inline">\((2.12)\)</span>
+is</p>
+<p> </p>
+<p><span class="math display">\[\Lambda_u(\boldsymbol
+y)=\left[n\,log\frac{\tilde S^2}{n} -\tau\,log\frac{\hat
+S^2_1}{\tau}-(n-\tau)\,log\frac{\hat S^2_2}{n-\tau}
+\right]_{\tau=\hat\tau},\,\,\,\,\,\,\,\,\,\,\,\,(2.16)\]</span>  </p>
+<p>where</p>
+<p> </p>
+<p><span class="math display">\[\tilde
+S^2=(\boldsymbol{y}-\boldsymbol{X}\boldsymbol{\hat\beta})^T(\boldsymbol{y}-\boldsymbol{X}\boldsymbol{\hat\beta})\]</span></p>
+<p> </p>
+<p>is the residual sum of squares for the model assumed under the null
+hypothesis. This statistic can be used to tests for a change in the
+variance as well as for a change in the regression coefficients
+(Worsley, 1983). In the case of equal variances, <span class="math inline">\(\sigma^2_1=\sigma^2_2=\sigma^2\)</span>, we
+have</p>
+<p> </p>
+<p><span class="math display">\[\Lambda_u(\boldsymbol y)=n\,log\left[
+\frac{\tilde S}{\hat S^2_1+\hat S^2_2} \right]_{\tau=\hat\tau}.\]</span>
+ </p>
+<p>For <span class="math inline">\(\tau\)</span> known and <span class="math inline">\(\sigma^2_1=\sigma^2_2\)</span> the usual <span class="math inline">\(F\)</span>-test statistic for <span class="math inline">\(H_0 : \boldsymbol{\beta}_1 =
+\boldsymbol{\beta}_2\)</span> is</p>
+<p> </p>
+<p><span class="math display">\[F_{\tau}=\frac{\left[{\tilde
+S}^2-\left(\hat S^2_1+\hat S^2_2\right)\right]/p}{\left(\hat S^2_1+\hat
+S^2_2\right)/(n-2p)},\]</span>  </p>
+<p>which under <span class="math inline">\(H_0\)</span> follows an <span class="math inline">\(F\)</span>-distribution with <span class="math inline">\(p\)</span> and <span class="math inline">\(n−2p\)</span> degrees of freedom. Worsley (1983)
+and Beckman and Cook (1979) suggested to use a generalized <span class="math inline">\(F\)</span>-test statistic, namely</p>
+<p> </p>
+<p><span class="math display">\[F_{max}=
+\underset{p&lt;\tau&lt;n-p}{\max} F_\tau\]</span></p>
+<p> </p>
+<p>for testing <span class="math inline">\(H_0 : \boldsymbol{\beta}_1 =
+\boldsymbol{\beta}_2\)</span>. They gave an approximation to the
+distribution of <span class="math inline">\(F_{max}\)</span> under the
+null hypothesis based on the Bonferroni inequality. As the distribution
+of the <span class="math inline">\(F\)</span>-test statistic depends on
+the configuration of the design matrix, Beckman and Cook (1979)
+simulated four OLMs with different design matrices to investigate the
+influence of the design on the distribution of the <span class="math inline">\(F\)</span>-test statistic. They showed that there
+is a non-negligible influence. Furthermore, they gave approximative
+upper bounds for the 90% percentiles of the <span class="math inline">\(F_{max}\)</span> distribution based on these
+simulations. The bounds were conservative when testing for a change in
+the linear regression or if the variability of the explanatory variable
+is large. Therefore, if the variability of the explanatory variable is
+greater than in the considered design of Beckman and Cook (1979), they
+recommended to apply the usual Bonferroni inequality instead of the
+simulated values. Worsley (1983) introduced upper bounds for the
+percentiles of the <span class="math inline">\(F_{max}\)</span>
+distribution, based on an improved Bonferroni inequality (Worsley,
+1982). Furthermore, to avoid the integration for calculating these
+bounds, he approximated these bounds using the MacLaurin series. He
+showed that both, the exact and the approximated bounds are more
+accurate than the bounds calculated with the usual Bonferroni
+inequality.</p>
+<p> </p>
+<p>Farley, Hinich, and McGuire (1975) introduced a simpler
+interpretation of the test presented by Farley and Hinich (1970).
+Furthermore, they compared the power of the three methods, the Chow
+test, the approach based on <span class="math inline">\(F_{max}\)</span>
+and the method introduced by Farley and Hinich (1970). Their results,
+based on a few simulations were that Chow’s test using <span class="math inline">\(\tau = n/2\)</span> is most powerful if the change
+point lies in the middle of the data. In this case, the method
+introduced by Farley and Hinich (1970) has less power than that of Chow,
+but performs better than the LR test. In contrast, if the change point
+lies near the left or right extremes of the data, the LR test is most
+powerful.</p>
+<p> </p>
+<p>Esterby and El-Shaarawi (1981) considered a linear regression with
+one change point, where the explanatory variables are polynomials of
+unknown degree <span class="math inline">\(p_1\)</span> and <span class="math inline">\(p_2\)</span> for the first and second segment,
+respectively. They showed that the maximum likelihood for the assumed
+change point model is proportional to <span class="math inline">\(\hat\sigma_1^{-\tau}\hat\sigma_2^{-(n-\tau)}\)</span>
+assuming equal variances, and proportional to <span class="math inline">\((\tau-p_1-1)\hat\sigma_1^{2}+(n-\tau-p_2-1)\hat\sigma_2^{2}\)</span>
+assuming unequal variances, where <span class="math inline">\(\hat\sigma_d^2\)</span> are the ML estimates of
+<span class="math inline">\(\sigma_d^2\)</span>. Thus, in the case of
+equal variances, maximizing the log likelihood corresponds to minimizing
+the residual sums of squares. Furthermore, they proposed an iterative
+method for estimating simultaneously the degrees of the polynomials and
+the change point.</p>
+<p> </p>
+<p>Tests for general hypotheses, where the variance additionally changes
+at the change point, were first introduced by Brown, Durbin, and Evans
+(1975) using recursive residuals. These residuals will be considered
+Later in the article. A more detailed discussion on testing a change
+point in OLMs is given in Seber and Wild (1989).</p>
 <p> </p>
 </div>
 <div id="change-point-detection-in-generalized-linear-model" class="section level2">
 <h2>3. Change Point Detection in Generalized linear model</h2>
-<p><strong>3.1 Poisson Random Variables</strong></p>
+<p> </p>
+<p>In this section GLMs with one discontinuous change point are
+considered. GLMs are a generalization of OLMs.First, the response
+variable must be no longer normal distributed, but can follow any
+distribution from the linear exponential family. Second, in GLMs the
+mean structure is determined by a continuous link function <span class="math inline">\(g(·)\)</span> and an unknown parameter vector
+<span class="math inline">\(\boldsymbol{\beta}\)</span>, namely,</p>
+<p> </p>
+<p><span class="math display">\[g(\mu)=\eta=\boldsymbol{x}^T\boldsymbol{\beta},\]</span>
+ </p>
+<p>where <span class="math inline">\(\eta\)</span> is the so called
+linear predictor. Third, it follows that the response variance is the
+product of a so-called dispersion parameter <span class="math inline">\(\phi\)</span> and the variance function <span class="math inline">\(V(·)\)</span>, which is allowed to depend on <span class="math inline">\(\mu\)</span>, i.e.</p>
+<p> </p>
+<p><span class="math display">\[Var(y)=\phi V(\mu).\]</span></p>
+<p> </p>
+<p>In general, a change in the mean structure as well as a change in the
+variance structure is imaginable. A different mean structure for both
+segments may be due to different link functions as well as different
+linear predictors, where the difference of the linear predictors may be
+due to different sets of explanatory variables or different values of
+the linear parameter <span class="math inline">\(\boldsymbol{\beta}\)</span>. A change in the
+variance structure can be due to different probability models for each
+segment, which indicates different variance functions <span class="math display">\[V(·)\]</span> or different dispersion parameters
+specific for each segment. However, in this work only a change in the
+linear parameters is considered. Moreover, the probability model is the
+same for all segments and we assume that the dispersion parameter is
+constant for all observations and segments. Thus, in the remainder of
+this work a common dispersion parameter <span class="math inline">\(\phi\)</span> is considered. It is important to
+note that the variance of the observation <span class="math inline">\(y\)</span> is a function of the mean <span class="math inline">\(\mu\)</span>. Thus, a change in the mean indicates
+a change in the variance of <span class="math inline">\(y\)</span>, as
+well, even if the dispersion parameter is constant for all observations
+and the variance function is the same for all segments.</p>
+<p> </p>
+<p>As GLMs are generalizations of OLMs, the model (2.11) with one
+discontinuous change point is extended to GLMs as</p>
+<p> </p>
+<p><span class="math display">\[g(\mu_i)=\begin{cases}\boldsymbol{x}^T_i\boldsymbol{\beta}_1\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,i
+= 1, \dots,
+\tau\\\boldsymbol{x}^T_i\boldsymbol{\beta}_2\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,i
+= \tau+1, \dots,
+n,\end{cases}\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,(2.17)\]</span></p>
+<p> </p>
+<p>where both parameter vectors <span class="math inline">\(\boldsymbol{\beta}_1 = ({\beta}_{11},\dots,
+{\beta}_{1p})^T\)</span> and <span class="math inline">\(\boldsymbol{\beta}_2 = ({\beta}_{21},\dots,
+{\beta}_{2p})^T\)</span> are of the same dimension <span class="math inline">\((p\times1)\)</span>. Again, the change point <span class="math inline">\(\tau\)</span> is an index <span class="math inline">\(i\)</span> and determines the observation <span class="math inline">\(\boldsymbol{x}_\tau\)</span> after which the
+relationship between the response and the explanatory variable changes.
+Under the assumptions about a unique link function and a unique variance
+function for both segments, <span class="math inline">\((2.17)\)</span>
+can be partitioned into two autonomous GLMs, which can be written as</p>
+<p> </p>
+<p><span class="math display">\[\begin{cases}g(\boldsymbol{\mu}_1)=\boldsymbol{X}_1\boldsymbol{\beta}_1
+\\
+g(\boldsymbol{\mu}_2)=\boldsymbol{X}_2\boldsymbol{\beta}_2,\end{cases}
+\,\,\,\,\,\,(2.18)\]</span></p>
+<p> </p>
+<p>where <span class="math inline">\(\boldsymbol\mu_1\)</span> and <span class="math inline">\(\boldsymbol\mu_2\)</span> are both column vectors
+containing the first <span class="math inline">\(\tau\)</span> and last
+<span class="math inline">\(n−\tau\)</span> values of the mean <span class="math inline">\(\boldsymbol\mu = (\mu_1,\dots , μ_n)^T\)</span>,
+and the matrices <span class="math inline">\(\boldsymbol{X}_1\)</span>
+and <span class="math inline">\(\boldsymbol{X}_2\)</span> are build up
+by the first <span class="math inline">\(\tau\)</span> and the last
+<span class="math inline">\(n−\tau\)</span> row vectors of the design
+matrix, respectively.</p>
+<p> </p>
+<p>To derive the ML estimates of <span class="math inline">\(\boldsymbol{\beta}_d,\,\, d = 1, 2, \phi\)</span>,
+and <span class="math inline">\(\tau\)</span> , again a closer look at
+the log likelihood is necessary. The log likelihood of GLMs without a
+change point of a sample <span class="math inline">\(\boldsymbol{y} =
+({y}_{1},\dots, {y}_{n})^T\)</span> is</p>
+<p> </p>
+<p><span class="math display">\[\ell(\boldsymbol{\theta},\phi|\boldsymbol
+y)=\sum^n_{i=1}\left[\frac{y_i\theta_i-b(\theta_i)}{\phi}+c(y_i,\phi)\right],\,\,\,\,\,\,(2.19)\]</span>
+ </p>
+<p>where <span class="math inline">\(\boldsymbol{\theta} =
+({\theta}_{1},\dots, {\theta}_{n})^T\)</span> is the vector of the
+canonical parameter of the exponential family. Usually in GLMs, <span class="math inline">\(\boldsymbol{\beta}\)</span> is the parameter of
+interest. Thus, it is common to write the log likelihood in terms of
+<span class="math inline">\(\boldsymbol{\beta}\)</span>, i.e. <span class="math inline">\(\ell(\boldsymbol{\beta},\phi|\boldsymbol
+y)\)</span>.</p>
+<p> </p>
+<p>First, consider the case where <span class="math inline">\(\tau\)</span> is known. The log likelihood for a
+GLM with one discontinuous change point <span class="math inline">\(\tau\)</span> and the parameter of interest <span class="math inline">\(\boldsymbol{\beta}=(\boldsymbol{\beta}_1^T+\boldsymbol{\beta}_2^T)^T\)</span>
+is given by</p>
+<p> </p>
+<p><span class="math display">\[\ell(\boldsymbol{\beta},\phi|\tau,\boldsymbol
+y)=\sum^\tau_{i=1}\left[\frac{y_i\theta_i-b(\theta_i)}{\phi}+c(y_i,\phi)\right]+\sum^n_{i=\tau+1}\left[\frac{y_i\theta_i-b(\theta_i)}{\phi}+c(y_i,\phi)\right].\,\,\,\,\,\,(2.20)\]</span></p>
+<p> </p>
+<p>Note that <span class="math inline">\(b&#39;(\theta_i) =
+\mu_i\)</span>, and <span class="math inline">\((2.17)\)</span> holds.
+As the <span class="math inline">\(y_i\)</span>’s are independent,
+again, both terms on the right hand side are autonomous (see Subsection
+2.1). Consequently the ML estimates <span class="math inline">\(\boldsymbol{\hat\beta}_d\)</span> are the ML
+estimates of the two models of <span class="math inline">\((2.18)\)</span> corresponding to the first <span class="math inline">\(\tau\)</span> and last <span class="math inline">\(n−\tau\)</span> observations, respectively. The
+dispersion parameter <span class="math inline">\(\phi\)</span> is
+estimated by the usual Pearson statistic based on all observations.</p>
+<p> </p>
+<p>In the case where <span class="math inline">\(\tau\)</span> is
+unknown, the change point has to be estimated. As the estimates of the
+parameters <span class="math inline">\(\boldsymbol{\hat\beta}_d\)</span>
+and <span class="math inline">\(\phi\)</span> depend on the change point
+<span class="math inline">\(\tau\)</span>, the same problem arises as in
+OLMs. That is, there is no closed form solution of the estimates <span class="math inline">\(\hat\tau\)</span>, <span class="math inline">\(\boldsymbol{\hat\beta}_d\)</span>, and <span class="math inline">\(\hat\phi\)</span>. Hence, a grid search over all
+reasonable change points is applied to find the global maximum of the
+log likelihood</p>
+<p> </p>
+<p><span class="math display">\[\ell(\boldsymbol{\beta},\phi,\tau|\boldsymbol
+y)=\ell(\boldsymbol{\beta}_1,\phi|y_1,\dots,y_\tau)+\ell(\boldsymbol{\beta}_2,\phi|y_{\tau+1},\dots,y_n).\]</span></p>
+<p> </p>
+<p>To guarantee the estimable of the parameters <span class="math inline">\(\boldsymbol{\hat\beta}_d\)</span> and <span class="math inline">\(\phi\)</span>, the reasonable values of <span class="math inline">\(\tau\)</span> are restricted to <span class="math inline">\(\{p + 1, \dots , n − p − 1\}\)</span>.</p>
+<p> </p>
+<p>A common quantity to evaluate the goodness-of-fit of a GLM is the
+deviance. As the fitted value $ {_i}$ of a GLM is a function of the
+explanatory variables and the estimated linear parameter <span class="math inline">\(\boldsymbol{\hat\beta}\)</span>, we reparameterize
+the log likelihood. Thus, in what follows, we denote the log likelihood
+in terms of <span class="math inline">\(\boldsymbol{\hat\mu}\)</span>
+instead of <span class="math inline">\(\boldsymbol{\hat\beta}\)</span>.
+In a GLM without a change point, the deviance is defined as</p>
+<p> </p>
+<p><span class="math display">\[D=D(\boldsymbol{y},\boldsymbol{\hat\mu}
+,\phi)=2\phi[\ell(\boldsymbol{y},\phi|\boldsymbol{y})-\ell(\boldsymbol{\hat\mu},\phi|\boldsymbol{y})],\]</span>
+ </p>
+<p>where <span class="math inline">\(\ell(\boldsymbol{y},\phi|\boldsymbol{y})\)</span>
+is the log likelihood of the saturated model with <span class="math inline">\(\boldsymbol{\hat\mu} = \boldsymbol{y}\)</span>. As
+for a given <span class="math inline">\(\phi\)</span> and given data
+set, <span class="math inline">\(\ell(\boldsymbol{y},\phi|\boldsymbol{y})\)</span>
+is a constant, maximizing the log likelihood is equivalent to minimizing
+the deviance. Besides applying the deviance to evaluate the
+goodness-of-fit of GLMs, it is widely used to compare nested models.
+This is done by considering the difference between the deviances of the
+two models under consideration. In particular, differences between the
+deviances are used to decide if some additional explanatory variables
+improve the fit of the model. In general, the difference of the deviance
+of two nested GLMs equals the LR test statistic. Therefore, under
+certain regularity conditions, it follows asymptotically a <span class="math inline">\(\chi^2\)</span>-distribution with <span class="math inline">\(q\)</span> degrees of freedom, where <span class="math inline">\(q\)</span> is the difference of the number of
+parameters of these two models.</p>
+<p> </p>
+<p>As mentioned in Subsection 2.1, an OLM without a change point can be
+considered as nested in a OLM with a change point. This holds for GLMs
+if the structure of the variance is the same over the entire model and
+because the design matrix for a GLM with a change point is the same as
+for an OLM with a change point. Hence, an intuitive and obvious method
+to compare a GLM with a change point to a GLM without a change point is
+to analyze the difference between the deviances of these two models. The
+deviances of the two submodels of <span class="math inline">\((2.18)\)</span> are</p>
+<p> </p>
+<p><span class="math display">\[D(\boldsymbol{y}_1,\boldsymbol{\hat\mu}_1
+,\phi)=2\phi\left[\sum^\tau_{i=1}\ell({y_i},\phi|{y_i})-\sum^\tau_{i=1}\ell({\hat\mu_i},\phi|{y_i})\right]\\D(\boldsymbol{y}_2,\boldsymbol{\hat\mu}_2
+,\phi)=2\phi\left[\sum^n_{i=\tau+1}\ell({y_i},\phi|{y_i})-\sum^n_{i=\tau+1}\ell({\hat\mu_i},\phi|{y_i})\right],\]</span>
+ </p>
+<p>where <span class="math inline">\(\boldsymbol{y}_1\)</span> and <span class="math inline">\(\boldsymbol{y}_2\)</span> are column vectors of
+the first <span class="math inline">\(\tau\)</span> and last <span class="math inline">\(n − \tau\)</span> observations, respectively. As
+the deviance of two autonomous models are additive, the deviance of a
+GLM with a change point is</p>
+<p> </p>
+<p><span class="math display">\[D^{cp}=D^{cp}(\boldsymbol{y},\boldsymbol{\hat\mu}_1,\boldsymbol{\hat\mu}_2,\phi)=D(\boldsymbol{y}_1,\boldsymbol{\hat\mu}_1,\phi)+D(\boldsymbol{y}_2,\boldsymbol{\hat\mu}_2,\phi),\]</span>
+ </p>
+<p>where the superscript denotes that this is the deviance corresponding
+to a GLM with a change point. Then the difference between the deviance
+<span class="math inline">\(D\)</span> of a GLM without change point and
+<span class="math inline">\(D^{cp}\)</span> is</p>
+<p> </p>
+<p><span class="math display">\[D-D^{cp}=-2\phi[\ell(\boldsymbol{\hat\mu},\phi|\boldsymbol{y})-\ell(\boldsymbol{\hat\mu}_1,\phi|y_1,\dots,y_{\tau}
+)-\ell(\boldsymbol{\hat\mu}_2,\phi|y_{\tau+1},\dots,y_{n} )],\]</span>
+ </p>
+<p>By definition, this is minus twice the LR test statistic of a GLM
+with and without a change point. For normal errors, identity link
+function and equal variances, this difference is</p>
+<p> </p>
+<p><span class="math display">\[D-D^{cp}=(\boldsymbol{y}-\boldsymbol{\hat\mu})^T(\boldsymbol{y}-\boldsymbol{\hat\mu})\\-\left[(\boldsymbol{y}_1-\boldsymbol{\hat\mu}_1)^T(\boldsymbol{y}_1-\boldsymbol{\hat\mu}_1)+(\boldsymbol{y}_2-\boldsymbol{\hat\mu}_2)^T(\boldsymbol{y}_2-\boldsymbol{\hat\mu}_2)\right]
+\\=\tilde S^2-\left[\hat S^2_1+\hat S^2_2\right],\]</span>  </p>
+<p>which is the difference between the residual sum of squares of the
+two models. As the same deviations from the regularity conditions
+mentioned in Subsection 2.1 arises, the difference <span class="math inline">\(D − D_{cp}\)</span> does not follow a <span class="math inline">\(\chi^2\)</span>-distribution, even in the case of
+a common dispersion parameter for all observations. Thus, this
+difference can only be used as an approximative test.</p>
+<p> </p>
+<p> </p>
 </div>
 <div id="bootstrap-recent-development" class="section level2">
 <h2>4. Bootstrap (recent development)</h2>
+<p>and the ” model parameter value as follows b = argmax  L(;Y);  =
+argmax  IEL(;Y): The algorithm sequentially computes LRT statistic
+(Th(t)) for each t in the sliding window proce- dure. The LRT statistic
+itself corresponds to the gain from window split into two parts (Yl;Yr):
+Th(t) = L(bl;Yl) + L(br;Yr) 􀀀 L(b;Y); (T) Yl = (Yt􀀀h; : : : ; Yt􀀀1);
+Yr = (Yt; : : : ; Yt+h􀀀1); bl = argmax  L(;Yl); br = argmax 
+L(;Yr) According to the Theorem 3, encountering change point, statistic
+2Th(t)  k(t) + (t)k2 starts growing according to change point pattern
+type (for example spades, trapezium, horn, ref. the Figure 1). In order
+to match pattern positions, the procedure monitors 2h values of the LRT
+simultaneously and convolves them with each of the predened pattern
+functions P (t): TPh( ) = X t P (t) p 2Th(t): (TP) High values of
+TPh( ) correspond to a sucient correlation of p 2Th and P (similar to
+the dependence on t). The algorithm marks a time moment  at a scale h
+as a change point, if the test statistic TPh( ) exceeds a calibrated
+(by bootstrap procedure) critical value zh: f is a change point g , f9h
+: TPh( ) &gt; zhg: The greater window size h is chosen, the more
+probably the algorithm will mark  as a change point. Again, small
+windows may mark  faster. Weighted bootstrap procedure enables
+resampling of the statistic max1n TPh( ) and thus calculation of the
+critical value zh for the window size 2h. It generates a sequence of
+weighted likelihood functions, where each element is a convolution of
+independent likelihood components and weight vector (u[ 1; : : : ; u[
+n): L[(;Y) = X i u[i li(); (Lb) 3 where fu[i gni =1 are i.i.d. and u[i
+2 N(1; 1). At each weights generation one gets a new value of L[() and
+its optimal parameter [ and thus bootstrap procedure enables to
+estimate L(b) uctuations. The corresponding bootstrap LRT statistic is
+T[ h(t) = L[([ l ;Yl) + L[([r ;Yr) 􀀀 sup  fL[(;Yl) + L[( + br 􀀀
+bl;Yr)g; (Tb) [ = argmax  L[(;Y): Parameter (br 􀀀 bl) is required
+for condition T[ h </p>
+<p>[</p>
+<p>(ref. Theorem 6). In this case one can estimate max1n TP[ h( )
+quantiles under the null hypothesis ([(t) / br(t) 􀀀 bl(t)) instead of
+the false assumption ([(t) = 0). Empirical bootstrap version generates
+subsamples of data fYkg from the complete dataset with random
+independent indexes of size n. In this case L(;Y) = X i lk(i)(); (Le)
+where fk(i)gni =1 are i.i.d. and k(i) 2 f1; : : : ; ng. For all window
+positions br = bl = b and here bias correction is not required. So
+the corresponding LRT statistic is like (T): T h(t) = L( l ;Yl) +
+L(r ;Yr) 􀀀 L(;Y); (Te)  = argmax  L(;Y): Empirical bootstrap
+works better in the application but less suitable for theoretical
+investigations (the distribution is discontinuous). 3 Main results Below
+we present the Theorems that describes dierence between probabilistic
+measures of TPh( ) and TP[ h( ) (precision of the bootstrap
+calibration) and LRT sensitivity to parameter  transition at change
+point. In independent models each noise vector lr(t) = (t) 2 IRp is a
+sum of independent vectors (ref. Section 5.2. for lr(t) denition)
+lr(t) = Xt􀀀1 i=t􀀀h i 􀀀 t+Xh􀀀1 i=t i; i / rli(): Aggregate all i
+into one vector T = (T 1 ; : : : ; T n ): Theorem 1. Let dataset size
+be n and the window equal to h. Include conditions from lemmas 3, 6 and
+9. Then for each xed z  IP  max 1n TPh( ) &gt; z  􀀀 IP [ 
+max 1n TP[ h( ) &gt; z   TV TV = C1Z + C2kVar(lr) 􀀀
+Var[([ lr)k1=2 1 + 7CA(} + }[); where kVar(lr) 􀀀 Var[([ lr)k1  10 p
+log(np) p 2hkVar()k1(3 + kbk) + kbk2; kbk2 = max t tX+2h i=t kIEik2 1;
+4 3 Z  2hIE kk3 1 ; C1 = 5C1=3  CA; C2 = 4C1=2  CA: Constants C 
+log2(n), C  log(n) and CA  p3=2 log(n) are described in Section
+5.10.. The proof is a direct consequence of Theorems 3, 6 and 9. Remark.
+1. Parameters asymptotic Z  log1=2(n) (2h)1=6 ; kVar(lr) 􀀀 Var[([
+lr)k1=2 1  log1=4(n) (2h)1=4 ; } + }[  p h1=2 : 2. For quantile
+estimation of the statistic max1n TPh( ) with quantile of max1n
+TP[ h( ) one has to show that  IP  max 1n TPh( ) &gt; z[() 
+􀀀    TV ; for z[() dened by equation IP [  max 1n TP[ h( )
+&gt; z[()  = : This statement is a consequence of the Theorem (1) but
+not a direct one since the argument z[() is random and depends on
+max1n TPh( ). Involving sandwich Lemma 21 fullls this issue. The
+next part of this Section evaluates the smallest parameter  transition
+that is sucient for change point detection in a xed position P  and
+window size 2h. Let zh() be a quantile of t P (t)klr(t)k such that
+IP</p>
+<p>X t P (t)klr(t)k &gt; zh() ! =   Var( P t P (t)klr(t)k) (zh()
+􀀀 P t P (t)IEklr(t)k)2 : Section 5.17. provides upper bound for  and
+is summarized in following statement. Theorem 2. Let P t P (t) = 0 and
+IEklr(t)k = p p. The sucient condition for abrupt type change point
+detection of size  with probability 1􀀀e􀀀x in position  using triangle
+pattern (P) is kDlr( r 􀀀  l )( )k =  &gt; 5p1=4(x +
+log(2h))1=4ex=2 + 21}; where matrix Dlr is dened in Theorem 3.</p>
 </div>
 <div id="detecting-multiple-change-points-the-pulse-criterion" class="section level2">
 <h2>5. Detecting multiple change points: the PULSE criterion</h2>
+<p>X1; :::;Xn be independent one-dimensional random variables decomposed
+as Xi = i + “i; 1  i  n, where i = E(Xi) are the means. Assume that
+there are K change points 1 &lt; z1 &lt; z2 &lt; ::: &lt; zK &lt; n such
+that zk􀀀1+j = (k), for k = 1;    ;K + 1 and 0  j  zk 􀀀 zk􀀀1 􀀀 1
+where z0 = 0 and zK+1 = n. For k = 1; :::;K, write k = j(k+1) 􀀀 (k)j
+for the (non-zero) dierence in means between consecutive segments. The
+number K can go to innity as the sample size goes to innity.
+Statistica Sinica: Newly accepted Paper (accepted author-version subject
+to English editing) 2.2 Criterion Construction Write the minimum length
+of segments as n :  n := min 0kK fzk+1 􀀀 zkg (2.1) and the minimum
+magnitudes of mean changes as :  := min 1kK k: (2.2) Denoted by 1
+&lt; ^z1  ^z2  :::  ^zK &lt; n 􀀀 1 as the estimated locations. 2.2
+Criterion Construction Construct a signal statistic by the following
+steps. Consider the mean changes detection problem rst. Dierence of
+Moving Averages: To character the mean information, let S(i) be the
+moving sum with the window size n for every location i as: S(i) =
+i+Xn􀀀1 j=i j (2.3) As the dierence between two successive moving sums
+at the population level can show the mean change at its location zk, we
+dene D(i) as: for 1  i  n 􀀀 2n; if 2n &lt; n , D(i) := 1 n (S(i)
+􀀀 S(i 􀀀 n)) = 1 n ( i+Xn􀀀1 j=i j 􀀀 Xi􀀀1 j=i􀀀n j): (2.4) Statistica
+Sinica: Newly accepted Paper (accepted author-version subject to English
+editing) 2.2 Criterion Construction For any xed k, we have: D(i) =
+8&gt;&gt;&gt;&gt;&gt;&lt; &gt;&gt;&gt;&gt;&gt;: i􀀀(zk􀀀n) n (k+1 􀀀
+k); zk 􀀀 n  i &lt; zk; zk+n􀀀i n (k+1 􀀀 k); zk  i  zk + n 0;
+zk􀀀1 + n  i  zk 􀀀 n: (2.5) This is because, when zk􀀀1+n  i 
+zk􀀀n, S(i) = S(i+n). D(i) attains a local maximum/minimum at i = zk
+for any k with 1  k  K within the segment of length 2n. Figure 1
+presents the plot for visualizing the pattern. This is not a new idea
+while just the idea of MOSUM. Identifying local minima would be a way to
+identifying changes. As it can be expected to have too many local
+maxima/minima due to the randomness oscillation, we may have diculty to
+accurately determine the number of change points and their locations. To
+make the dierences more smoothly at the sample level, we consider a
+smoothing step by doubly averaging below. It is worth pointing out that
+the second averaging step in theory is not a necessary step, but in
+practice, we found it is useful for a better detection. Doubly
+Averaging: The second round of averaging is to repeatedly use datum
+points in every average. It is worth pointing out that at the population
+level, this step is not necessary, but at the sample level, this step is
+designed to alleviate the oscillation of the sequence. We will have more
+explanations in Remark 1 below. Denote ~D(i) by the averages of D(i)
+within Statistica Sinica: Newly accepted Paper (accepted author-version
+subject to English editing) 2.2 Criterion Construction the window of
+size n: ~D (i) = 1 n i+Xn􀀀1 j=i D(j): (2.6) As the result, we have
+that ~D (i) 8&gt;&gt;&lt; &gt;&gt;: &gt; 0; zk 􀀀 2n  i  zk + n; = 0;
+otherwise; with the following detail: j~D(i)j =
+8&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;:
+0; zk􀀀1 + n  i  zk 􀀀 2n; (i􀀀zk+2n+1)(i􀀀zk+2n) 2 n k; zk 􀀀 2n
+&lt; i  zk 􀀀 n; 􀀀i2􀀀ni+2izk􀀀i+zk􀀀z2 k+nzk+1 2 (2 n􀀀n) 2 n k; zk
+􀀀 n &lt; i &lt; zk 􀀀 n 2 􀀀 p n; ( 3 4 􀀀 n􀀀 p n 2 n )k; i = zk 􀀀
+n 2 􀀀 p n; 􀀀i2􀀀ni+2izk􀀀i+zk􀀀z2 k+nzk+1 2 (2 n􀀀n) 2 n k; zk 􀀀 n
+2 􀀀 p n &lt; i &lt; zk 􀀀 n 2 ; 3 4k; i = zk 􀀀 1 2n;
+􀀀i2􀀀ni+2izk􀀀i+zk􀀀z2 k+nzk+1 2 (2 n􀀀n) 2 n k; zk 􀀀 n 2 &lt; i &lt;
+zk 􀀀 n 2 + p n; ( 3 4 􀀀 n􀀀 p n 2 n )k; i = zk 􀀀 n 2 + p n;
+􀀀i2􀀀ni+2izk􀀀i+zk􀀀z2 k+nzk+1 2 (2 n􀀀n) 2 n k; zk 􀀀 n 2 + p n &lt;
+i  zk; (􀀀i+zk+n+2)(􀀀i+1+n+zk) 2 n k; zk &lt; i  zk + n; 0; zk +
+n &lt; i  zk+1 􀀀 2n: where k = jk+1 􀀀kj. Clearly, ~D(i) attains
+local maxima at zk 􀀀 1 2n for each k with 1  k  K. The local
+maximizers of ~D(i) plus 1 2n are the Statistica Sinica: Newly accepted
+Paper (accepted author-version subject to English editing) 2.2 Criterion
+Construction locations of change points. Similarly as D(i), the sequence
+~D(i) cannot be directly used to be a signal statistic either. Now we
+construct a sequence of ridge ratios as a signal statistic that is of
+a”pulse” pattern such that change points can be well identied. Signal
+function (we will call it the signal statistic at the sample level).
+Consider the ratios between ~D(i) and ~D (i + 3 2n). Dene the ridge
+ratios T(i) at the population level as T(i) = j~D (i)j + cn j~D (i + 3
+2n)j + cn ; (2.7) where cn ! 0 as n ! 1, to be selected later, to avoid
+the undened terms 0=0. In addition, for i 2 (zk􀀀1 + n; zk 􀀀 2n), j~D
+(i)j = 0 and j~D(i + 3 2n)j monotonically increases. For i 2 (zk 􀀀 2n;
+zk 􀀀 1 2n), j~D(i))j monotonically increases, and j~D (i+ 3 2n)j
+monotonically decreases. For i 2 (zk􀀀n 2 ; zk+n), j~D (i+3 2n)j = 0
+and j~D(i)j monotonically decreases. Then cn could also play a role of
+making T(i) monotonic, to avoid the scenario where there are too many
+points tending to 0. In summary, the following property could be easily
+justied: letting &amp; and % mean decreasing and increasing with
+respect to the index i; ! 0 and ! 1 mean going to zero Statistica
+Sinica: Newly accepted Paper (accepted author-version subject to English
+editing) 2.2 Criterion Construction and innity as n ! 1, T(i) =
+8&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;:
+1; zk􀀀1 + n  i  zk 􀀀 7 2n; cn j~D (i+3 2n)j+cn &amp;; zk 􀀀 7 2n
+&lt; i &lt; zk 􀀀 2n; cn j~D (i+3 2n)j+cn ! 0; i = zk 􀀀 2n; j~D
+(i)j+cn j~D (i+3 2n)j+cn %; zk 􀀀 2n &lt; i &lt; zk 􀀀 n 2 ; j~D
+(i)j+cn cn ! 1; i = zk 􀀀 n 2 ; j~D (i)j+cn cn &amp;; zk 􀀀 n 2 &lt; i
+&lt; zk + n; 1; zk + n  i &lt; zk+1 􀀀 7 2n: Any true change point is
+just the local minimizer plus 2n. Based on the signal function, using
+the local minimizers to identify change points is convenient to
+implement. The toy example in Figure 1 shows the curve patterns of D(i),
+j~D(i + n=2)j and T(i + 2n) such that we can better understand why the
+pulse pattern of the signal function T(i), rather than that of D(i) or
+of j~D(i)j, can be used to construct an useful criterion. Dene their
+empirical versions. Sample Version. To dene the signal statistic at the
+sample level, which is called the signal function at the population
+level above, we can use the sample averages to estimate D(i) and ~D(i).
+Let ^ S(i) = Pi+n􀀀1 j=i Xj to estimate S(i), Dn(i) = 1 n ( ^ S(i)􀀀 ^
+S(i+n)) and ~Dn(i) = 1 n Pi+n􀀀1 j=i Dn(j). Statistica Sinica: Newly
+accepted Paper (accepted author-version subject to English editing) 2.2
+Criterion Construction Figure 1: The plots at the population level
+Statistica Sinica: Newly accepted Paper (accepted author-version subject
+to English editing) 2.2 Criterion Construction The signal statistic is
+then dened as: for i = 1; ::; n 􀀀 7 2n, Tn(i) = j~Dn(i)j + cn j~Dn(i +
+3 2n)j + cn ; (2.8) and the ridge value cn tends to 0 at a certain rate
+specied later. We can see that E ~Dn(i) = ~D(i). Criterion: As we
+discussed above, the signal statistic should be highly oscillating and
+there would be too many local minima. Thus, we restrict our search,
+separately within each chosen interval, to nd a local minimum of Tn(i).
+We do this through a threshold  with 0 &lt;  &lt; 1. That is, fi; n +
+1  i  n 􀀀 5 2n : Tn(i) &lt; g. From the properties of Tn(i) that can
+also be seen from the plot of Figure 1 heuristically, all these indices
+can be separated into disjoint subsets each containing only one change
+point asymptotically. Therefore, we can search, separately within the
+disjoint subsets, for local minima. To make the search easily
+implemented, we simply recommend  = 0:5 as a compromised value to avoid
+possible overestimation with large  close to 1 and underestimation with
+small  close to 0. From the denition of Tn(i)’s and its pulse pattern,
+we can also search for the changes through identifying local maxima
+that, at the population level, tend to innity. But it is equivalent to
+using 1=Tn(i). Thus, we do not discuss its use in this paper. Further,
+from the denition of Statistica Sinica: Newly accepted Paper (accepted
+author-version subject to English editing) 2.2 Criterion Construction
+T(i)’s at the population level, the gap between two local minimizers
+must be larger than 2n. Due to the consistency of the involved
+estimators, there are ^K pairs fmk;Mkg where mk and Mk with mk &lt; Mk
+are determined by Tn(i) &lt; 0:5 and mk satises that Tn(mk 􀀀 1)  0:5
+and Tn(mk) &lt; 0:5, and Tn(Mk) &lt; 0:5 and Tn(Mk + 1)  0:5. Write ^zk
+􀀀 2n as the minimizer in each interval (mk;Mk). Theorem 1. Assume that
+Xi 􀀀 EXi with second moment are independent identically distributed
+random variables. The tuning parameter cn and the window size n
+satises that qcn log n n ! 1, n1=p4 log n n ! 0, and  n n ! 1
+where n is the minimum number of samples between any two change
+points. (1) When K is known, then the estimators f^z1; :::; ^zKg have: ,
+for every  &gt; 0, Prfmax1k ^K j ^zk􀀀zk n j &lt; g ! 1 as n ! 1.
+(2) When K is xed but unknown, then ^K = K with a probability going to
+one and the estimators f^z1; :::; ^z ^K g have the same consistency as
+the above. (3) When K = Kn grows unbounded at the rate satisfying n Kn
+! 1 and unknown, the results are the same as those in (2). Remark 1. We
+have several issues to discuss. (1) For selecting the window size n,
+we, on one side, wish using small n such that we can detect changes
+within relatively short segments, and on the Statistica Sinica: Newly
+accepted Paper (accepted author-version subject to English editing) 2.2
+Criterion Construction other side, wish having large n such that ~Dn()
+has fast rate of convergence to make wide range of the ridge cn. This
+can make a fast rate of convergence the signal statistic Tn() converges
+to its limit. In this sense, the optimal selection, if possible, should
+be dierent from the optimal tuning parameter selection in nonparametric
+estimation, which tries to balance between bias and variance. Because we
+need not discuss the limiting distribution and then bias and variance,
+we have not yet had a good idea for what sense we can consider the
+optimal selection of n for the estimation eciency and whether an
+optimal choice exists. (2) As we discussed before, the second averaging
+is mainly for practical use: making the signal statistic less
+oscillating. The costs are: 1) the technical proof becomes more
+complicated, but still handable; and 2). the segment length for each
+change, if we consider even higher order averaging, should be increased
+to (o+1)n from 2n that is for rst order averaging where o is the
+order of averaging. From the plot, we may see that double averaging (o =
+2) makes the curve smooth suciently, and triple or higher order
+averaging may not be necessary any more, which requires even longer
+segment for detecting each change. Remark 2. The conditions on the rates
+of divergence of n, n and Kn are based on the following observations.
+First, we will prove that ~Dn(i)􀀀 ~D(i) Statistica Sinica: Newly
+accepted Paper (accepted author-version subject to English editing) 2.2
+Criterion Construction converges in probability to 0 at a rate of order
+q log n n . Then the ridge cn should be a dominating term in every
+Tn(i), which converges to 0 at a rate slower than that of ~Dn(i) 􀀀
+~D(i). Such a ridge can help Tn(i) hold the properties of T(i)
+asymptotically. We will show this in the proofs of the theorems in the
+supplementary material. For the ridge cn, we will recommend a choice for
+practical use in the numerical studies. To guarantee the estimation
+consistency, n should not be too small such that the averages can be
+close to the corresponding means. Thus, for the paradigms with short
+spacing, our method may not perform well. We will have a discussion in
+Section 7. Remark 3. As one pulse corresponds to one change, thus the
+length of segment cannot be longer than the minimum distance n between
+any two changes. Thus, we assume that the window size n = o(n ). On
+the other hand, n cannot be too small otherwise, the convergence rate
+of Tn to T will be slow. In our results, we assume that n1=4 p log n n
+! 0 although this condition could be weakened, which is beyond the score
+of this paper. All these conditions also restrict the number of change
+points to satisfy Kn = o( n  n ) Statistica Sinica: Newly accepted
+Paper (accepted author-version subject to English editing) 3. The case
+of weak signals In this section, we extend the criterion to handle with
+weak signal scenarios. The term signals” in this section means that the
+magnitudes of some changes converge to 0 at a certain rate as the sample
+size goes to innity. We also call such models as local models. Consider
+the sequence of models as, for 1  k  K: Xi =  + zkIfi  zkg + ;
+(3.9) where zk are the locations of change points. zk are the change
+magnitudes, which would converge to 0 as n ! 1. Denote z = min1kK k.
+We have the following results. Theorem 2. Under the conditions in
+Theorem 1, for the sequence of local models in (3.9), when log n 1=5z
+! 1, we have limn!1 Prf ^K = Kg = 1 and limn!1 Prfmax1k ^K j^zk􀀀zkj n
+&lt; g = 1, for every  &gt; 0.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Change Points in Variances In this section, we adopt the criterion
+for detecting change points in variances. Consider second moments of
+Xi’s that are generated from the fol- Statistica Sinica: Newly accepted
+Paper (accepted author-version subject to English editing) lowing model:
+Xi =  + “i; 1  i  n; (4.10) where  is an unknown mean and E(”) = 0,
+V ar(“) = 2 (i). Similarly, we assume that 2 (i)’s follow a piecewise
+constant structure with K+1 segments. In other words, there are K change
+points 1 &lt; z1 &lt; z2 &lt; ::: &lt; zK &lt; n 􀀀 1 such that, for any
+k with 0  k  K, 2 zk+1 = ::: = 2 zk+1 = 2 k: (4.11) As before,
+dene z0 = 0 and zK+1 = n. At the population level, we can similarly
+dene D(i) and ~D(i): D(i) = log (i) 􀀀 log (i􀀀n) and ~D(i) = 1 n
+i+Xn􀀀1 j=i D(j): We can estimate  by the sample mean and the variance
+by ^2</li>
+</ol>
+<ol style="list-style-type: lower-roman">
+<li>= 1 n i+Xn􀀀1 t=i (Xt 􀀀 1 n Xn j=1 Xj)2; (4.12) Dn(i) and ~Dn(i)
+are dened as the dierence of moving averages and the average of
+Dn(j)’s: Dn(i) = log ^(i) 􀀀 log ^(i+n) and ~Dn(i) = 1 n iX+n j=i
+Dn(j): (4.13) Finally, we take the ratios of ~D(i) to acquire the
+required estimator of T(i): Tn(i) = j~Dn(i)j + cn j~Dn(i + 3 2n)j + cn
+: (4.14) Statistica Sinica: Newly accepted Paper (accepted
+author-version subject to English editing) The criterion is exactly the
+same as that before by using fi; 1  i  n 􀀀 7 2n : Tn(i) &lt; g.
+Theorem 3. Assume that Xi􀀀 with fourth moments are independent dis-
+tributed random variables and the conditions in Theorem 1 are still
+satised. Then all the parallel results to those in Theorem 1 still
+hold.</li>
+</ol>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
