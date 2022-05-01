@@ -295,12 +295,200 @@ Farley and Hinich (1970) substituted (2.9) and (2.10) in the likelihood function
 
 \  
 
+Next we consider an OLM with more than one explanatory variable, commonly known as multiple linear regression. Again, let $y_i, i = 1, 2, \dots , n$ denote observations on the response variable. In contrast to section 2.1, let $x_i \in \mathbb{R}^{p×1}$ denote the column vector of $p$ independent explanatory variables, i.e. $\boldsymbol{x}_i = (1, x_{i2}, . . . , x_{ip})^T$, with $x_{i1} = 1$ for all $i$, to include an intercept in the model. Then an OLM with one discontinuous change point can be written as
+
+\  
+
+$$y_i =\begin{cases} \boldsymbol{x}_i^T\boldsymbol{\beta}_{1} + \varepsilon_{1i} \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,i = 1, \dots, \tau\\
+ \boldsymbol{x}_i^T\boldsymbol{\beta}_{2} + \varepsilon_{2i} \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,i = \tau+1, \dots, n, \\ \end{cases} \,\,\,\,(2.11)$$
+
+\  
+
+where $\boldsymbol{\beta}_d, \,\,\,\,\,d = 1, 2$, are $p \times 1$ vectors of unknown parameters and $\varepsilon_{di}$ are iid errors with $\varepsilon_{di} \stackrel{iid}{\sim} N(0, \sigma_d^2)$. To ensure valid estimates for $\boldsymbol{\beta}_d$ and $\sigma^2_d$ the possible values of $\tau$ are restricted to $\{p + 1, \dots , n − p − 1\}$. Moreover, it is assumed that the first $p+1$ and the last $n−p−1$ vectors of $\boldsymbol{x}_i$ are linearly independent.
+
+\  
+
+In matrix representation, model (2.11) can be written as two separate OLMs
+
+\  
+
+$$\begin{cases}\boldsymbol{y}_1=\boldsymbol{X}_1\boldsymbol{\beta}_1+\boldsymbol{\varepsilon}_{1}\\ \boldsymbol{y}_2=\boldsymbol{X}_2\boldsymbol{\beta}_2+\boldsymbol{\varepsilon}_{2},\end{cases} \,\,\,\,\,\,(2.12)$$
+\  
+
+where $\boldsymbol{y}_1$ and $\boldsymbol{y}_2$ are both column vectors of the first $\tau$ and the last $n − \tau$ observations of the response variable, respectively. The matrices $\boldsymbol{X}_1$ and $\boldsymbol{X}_2$ are the first $\tau$ and the last $n−\tau$ row vectors of the design matrix respectively, and hence given by $\boldsymbol{X}_1 = (\boldsymbol{x}_1,\dots , \boldsymbol{x}_\tau )^T$ and $\boldsymbol{X}_2 = (\boldsymbol{x}_{\tau+1},\dots, \boldsymbol{x}_n)^T$. Furthermore, the error vectors follow a Normal distribution, i.e. $\boldsymbol{\varepsilon}_{d} {\sim} N(\boldsymbol{0}, \sigma_d^2\boldsymbol{I}_d)$, where $\boldsymbol{I}_d$ is the identity matrix with rank $\tau$ for $d = 1$ and rank $n − \tau$ for $d = 2$.
+
+\  
+
+
+As there is no continuity constraint for the two models at the change point, the two models of $(2.12)$ are autonomous and can be written as
+
+\  
+
+$$\begin{pmatrix}\boldsymbol{y}_1\\\boldsymbol{y}_2\end{pmatrix}=\begin{pmatrix}\boldsymbol{X}_1&\boldsymbol{0}\\\boldsymbol{0}&\boldsymbol{X}_2\end{pmatrix}\begin{pmatrix}\boldsymbol{\beta}_1\\\boldsymbol{\beta}_2\end{pmatrix}+\begin{pmatrix}\boldsymbol{\varepsilon}_1\\\boldsymbol{\varepsilon}_2\end{pmatrix}. \,\,\,\,\,\,(2.13)$$
+\  
+
+
+Note that the design matrix in $(2.13)$ is block diagonal, which indicates independence between the estimates of $\boldsymbol{\beta}_1$ and $\boldsymbol{\beta}_2$. Thus, if the change point $\tau$ is known, the log likelihood can be partitioned into two terms, namely
+
+\  
+
+
+$$\ell(\boldsymbol{\beta},\boldsymbol{\sigma}^2|\tau,\boldsymbol y)=\ell(\boldsymbol{\beta}_1,\sigma_1^2|y_1,\dots,y_\tau)+\ell(\boldsymbol{\beta}_2,\sigma_2^2|y_{\tau+1},\dots,y_n),\,\,\,\,(2.14)$$
+
+\  
+
+with $\boldsymbol{\sigma}^2=(\sigma^2_1,\sigma^2_2)^T$. These two terms correspond to the log likelihood of the first $\tau$ observations and the last $n−\tau$ observations and both terms are mutually independent. Thus, the ML estimates for $\boldsymbol{\beta}$ and $\boldsymbol{\sigma}^2$ are the ML estimates of the two separate models and are given by
+
+\  
+
+
+$$\boldsymbol{\hat\beta}_d=(\boldsymbol{X}_d^T\boldsymbol{X}_d)^{-1}\boldsymbol{X}_d^T\boldsymbol{y}_d,,\,\,\,\,d=1,2$$
+
+\  
+
+
+and
+
+\  
+
+
+$$\hat\sigma_1^2=\frac{1}{\tau}\hat S_1^2, \,\,\,\,\hat\sigma_2^2=\frac{1}{n-\tau}\hat S_2^2,$$
+\  
+
+where
+
+\  
+
+$$\hat S^2_d=(\boldsymbol{y}_d-\boldsymbol{X}_d\boldsymbol{\hat\beta}_d)^T(\boldsymbol{y}_d-\boldsymbol{X}_d\boldsymbol{\hat\beta}_d)$$
+
+\  
+
+is the residual sum of squares for the model in the $d$th segment.
+
+\  
+
+
+In the case of $\tau$ unknown, however, the change point has to be estimated. The ML estimate of $\tau$ is again the value which maximizes the log likelihood $(2.14)$ at the given ML estimates $\boldsymbol{\hat\beta} = ( \boldsymbol{\hat\beta}_1^T,\boldsymbol{\hat\beta}_2^T)^T$ and $\boldsymbol{\hat\sigma}^2$ of the two models. Note that $\boldsymbol{\hat\beta}$ and $\boldsymbol{\hat\sigma}^2$ are again functions of $\tau$ and have to be estimated for each $\tau$ separately. The log likelihood $(2.14)$ at these ML estimates is given by
+
+\  
+
+$$\ell(\tau|\boldsymbol{\hat\beta},\boldsymbol{\hat\sigma}^2,\boldsymbol y)=-\frac{n}{2}log(2\pi )-\frac{\tau}{2}log\,\hat\sigma_1^2-\frac{n-\tau}{2}log\,\hat\sigma_2^2-\frac{1}{2\hat\sigma_1^2}\tau\hat\sigma_1^2-\frac{1}{2\hat\sigma_2^2}(n-\tau)\hat\sigma_2^2.$$
+\  
+
+
+Thus, $\hat\tau$ is obtained by maximizing
+
+\  
+
+$$\ell(\tau|\boldsymbol{\hat\beta},\boldsymbol{\hat\sigma}^2,\boldsymbol y)=-\frac{n}{2}log(2\pi )-\frac{\tau}{2}log\,\hat\sigma_1^2-\frac{n-\tau}{2}log\,\hat\sigma_2^2-\frac{n}{2}. \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,(2.15)$$
+\  
+
+with respect to $\tau = p + 1,\dots , n − p − 1$.
+
+
+\  
+
+Under the assumption $\sigma^2_1=\sigma^2_2=\sigma^2$ the ML estimate of $\sigma^2$ is
+
+\  
+
+$$\hat\sigma^2=\frac{1}{n}\left(\hat S^2_1+\hat S^2_2\right)$$
+
+\  
+
+and $(2.15)$ reduces to
+
+\  
+
+$$\ell(\tau|\boldsymbol{\hat\beta},\boldsymbol{\hat\sigma}^2,\boldsymbol y)=-\frac{n}{2}log(2\pi )-\frac{n}{2}log\,\hat\sigma^2-\frac{n}{2}.$$
+
+
+\  
+
+This means, that in the case of equal variances, $\hat\tau$ minimizes $\hat S^2_1+\hat S^2_2$.
+
+\  
+
+For testing the necessity of a change in an OLM, consider again the LR test statistic and Chow’s test. The quantity $\Lambda_u(\boldsymbol y)$ based on the LR test statistic for model $(2.12)$ is
+
+\  
+
+
+$$\Lambda_u(\boldsymbol y)=\left[n\,log\frac{\tilde S^2}{n} -\tau\,log\frac{\hat S^2_1}{\tau}-(n-\tau)\,log\frac{\hat S^2_2}{n-\tau} \right]_{\tau=\hat\tau},\,\,\,\,\,\,\,\,\,\,\,\,(2.16)$$
+\  
+
+where
+
+\  
+
+
+$$\tilde S^2=(\boldsymbol{y}-\boldsymbol{X}\boldsymbol{\hat\beta})^T(\boldsymbol{y}-\boldsymbol{X}\boldsymbol{\hat\beta})$$
+
+
+\  
+
+is the residual sum of squares for the model assumed under the null hypothesis. This statistic can be used to tests for a change in the variance as well as for a change in the regression coefficients (Worsley, 1983). In the case of equal variances, $\sigma^2_1=\sigma^2_2=\sigma^2$, we have
 
 
 
 \  
 
+
+$$\Lambda_u(\boldsymbol y)=n\,log\left[ \frac{\tilde S}{\hat S^2_1+\hat S^2_2} \right]_{\tau=\hat\tau}.$$
+\  
+
+For $\tau$ known and $\sigma^2_1=\sigma^2_2$ the usual $F$-test statistic for $H_0 : \boldsymbol{\beta}_1 = \boldsymbol{\beta}_2$ is
+
+\  
+
+$$F_{\tau}=\frac{\left[{\tilde S}^2-\left(\hat S^2_1+\hat S^2_2\right)\right]/p}{\left(\hat S^2_1+\hat S^2_2\right)/(n-2p)},$$
+\  
+
+which under $H_0$ follows an $F$-distribution with $p$ and $n−2p$ degrees of freedom. Worsley (1983) and Beckman and Cook (1979) suggested to use a generalized $F$-test statistic, namely
+
+\  
+
+$$F_{max}= \underset{p<\tau<n-p}{\max} F_\tau$$
+
+\  
+
+for testing $H_0 : \boldsymbol{\beta}_1 = \boldsymbol{\beta}_2$. They gave an approximation to the distribution of $F_{max}$ under the null hypothesis based on the Bonferroni inequality. As the distribution of the $F$-test statistic depends on the configuration of the design matrix, Beckman and Cook (1979) simulated four OLMs with different design matrices to investigate the influence of the design on the distribution of the $F$-test statistic. They showed that there is a non-negligible influence. Furthermore, they gave approximative upper bounds for the 90% percentiles of the $F_{max}$ distribution based on these simulations. The bounds were conservative when testing for a change in the linear regression or if the variability of the explanatory variable is large. Therefore, if the variability of the explanatory variable is greater than in the considered design of Beckman and Cook (1979), they recommended to apply the usual Bonferroni inequality instead of the simulated values. Worsley (1983) introduced upper bounds for the percentiles of the $F_{max}$ distribution, based on an improved Bonferroni inequality (Worsley, 1982). Furthermore, to avoid the integration for calculating these bounds, he approximated these bounds using the MacLaurin series. He showed that both, the exact and the approximated bounds are more accurate than the bounds calculated with the usual Bonferroni inequality.
+
+\  
+
+Farley, Hinich, and McGuire (1975) introduced a simpler interpretation of the test presented by Farley and Hinich (1970). Furthermore, they compared the power of the three methods, the Chow test, the approach based on $F_{max}$ and the method introduced by Farley and Hinich (1970). Their results, based on a few simulations were that Chow’s test using $\tau = n/2$ is most powerful if the change point lies in the middle of the data. In this case, the method introduced by Farley and Hinich (1970) has less power than that of Chow, but performs better than the LR test. In contrast, if the change point lies near the left or right extremes of the data, the LR test is most powerful.
+
+\  
+
+Esterby and El-Shaarawi (1981) considered a linear regression with one change point, where the explanatory variables are polynomials of unknown degree $p_1$ and $p_2$ for the first and second segment, respectively. They showed that the maximum likelihood for the assumed change point model is proportional to $\hat\sigma_1^{-\tau}\hat\sigma_2^{-(n-\tau)}$ assuming equal variances, and proportional to $(\tau-p_1-1)\hat\sigma_1^{2}+(n-\tau-p_2-1)\hat\sigma_2^{2}$ assuming unequal variances, where $\hat\sigma_d^2$ are the ML estimates of $\sigma_d^2$. Thus, in the case of equal variances, maximizing the log likelihood corresponds to minimizing the residual sums of squares. Furthermore, they proposed an iterative method for estimating simultaneously the degrees of the polynomials and the change point.
+
+\  
+
+
+Tests for general hypotheses, where the variance additionally changes at the change point, were first introduced by Brown, Durbin, and Evans (1975) using recursive residuals. These residuals will be considered Later in the article. A more detailed discussion on testing a change point in OLMs is given in Seber and Wild (1989).
+
+\  
+
 ## 3. Change Point Detection in Generalized linear model
+
+
+\  
+
+
+In this section GLMs with one discontinuous change point are considered. GLMs are a generalization of OLMs.First, the response variable must be no longer normal distributed, but can follow any distribution from the linear exponential family. Second, in GLMs the mean structure is determined by a continuous link function $g(·)$ and an unknown parameter vector $\boldsymbol{\beta}$, namely,
+
+\  
+
+
+$$$$
+
+
+\  
+
+
+
+
+
  **3.1 Poisson Random Variables**
   
  
